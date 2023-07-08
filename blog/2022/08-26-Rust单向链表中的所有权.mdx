@@ -1,0 +1,118 @@
+---
+slug: rust-single-linked-list-ownership2
+title: Rust单向链表中的所有权
+tags: [Rust, ownership]
+---
+
+import FileExplorer from '@site/src/components/FileExplorer';
+import libRs from '!!raw-loader!@site/source/rust_lc/src/lib.rs';
+import solutionsRs from '!!raw-loader!@site/source/rust_lc/src/solutions/mod.rs';
+import solution21Rs from '!!raw-loader!@site/source/rust_lc/src/solutions/solution_0021.rs';
+import datastructureRs from '!!raw-loader!@site/source/rust_lc/src/data_structure/mod.rs';
+import linkedListRs from '!!raw-loader!@site/source/rust_lc/src/data_structure/linked_list.rs';
+
+前段时间在尝试用 Rust 刷 Leetcode，一开始感觉没什么问题。直到遇到单向链表，我开始和编译器作斗争了。
+
+<!-- truncate -->
+
+一开始是根据编译器的提示稀里糊涂地解决的，加一个 `as_ref()`，加一个 `clone()` 什么的。
+问题虽然是解决了，但是代码非常不优雅，也有很多冗余，自己也糊里糊涂的。今天尝试一下把思路理清楚。
+
+用一个简单的题来做说明。 [Leetcode.21 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
+
+## Ownership & Borrowing
+
+先简单回顾一下 Rust 中 ownership 和 borrow 的基本规则
+
+- Each value in Rust has an owner.
+- There can only be one owner at a time.
+- When the owner goes out of scope, the value will be dropped.
+- At any given time, you can have either one mutable reference or any number of immutable references.
+- References must always be valid.
+
+按我的理解就是，Rust 中的一个值只能被一个变量所有，如果有另一个变量想要使用这个值，必须要用 `&` 借用，但是最多同时只能有一个 `&mut` 借用。
+
+## Enum Option 相关
+
+```rust
+#[derive(PartialEq, Eq, Clone, Debug)]
+pub struct ListNode {
+    pub val: i32,
+    pub next: Option<Box<ListNode>>,
+}
+```
+
+上面是题目给定的单向链表结构，用 `Option<Box<ListNode>>` 来表示链表的节点。
+这里主要看一下 `Option` 一些方法对所有权的影响。
+
+### `fn unwrap(self) -> T`
+
+`unwrap` 是 `Option` 中最常用的方法，它可以把一个 `Some` 的值取出来，如果是 `None`，就会 `panic`。
+这里值得注意的是 `unwrap` 会消费变量的所有权，比如下面的代码是无法通过编译的。
+
+```rust
+let some_string = Some("szzy".to_string());
+// 这里 some_string 的所有权被消费,"szzy" 这个值的所有权转移给了 unwrapped_string。
+let unwrapped_string = some_string.unwrap();
+// 这里编译不通过，因为 some_string 这时候已经变成一个无效的变量，它不拥有任何值。
+println!("{:?}", unwrapped_string);
+```
+
+### `fn as_ref(&self) -> Option<&T>`
+
+`as_ref` 的作用是把一个 `&Option<T>` 转化成 `Option<&T>`。
+类似的，`as_mut` 可以把一个 `&mut Option<T>` 转化成 `Option<&mut T>`。
+
+### `fn take(&mut self) -> Option<T>`
+
+`take` 会将 `Option` 的值取走，并用 `None` 代替。不过虽然这个方法会转移值的所有权，但是原来的变量还是有效的，只不过变成 `None` 了。
+因此下面的代码是可以通过编译的。
+
+```rust
+let mut some_string = Some("szzy".to_string());
+// 这里 "szzy" 这个值的所有权转移给了 _take 变量。
+let _take = some_string.take();
+// 这里 some_string 仍然是有效的变量，只不过它拥有的值是 `None`。
+println!("{:?}", some_string);
+```
+
+## 题解
+
+把上面的东西弄懂之后，处理单向链表就比较简单了。
+
+export const init = {
+  fileName: 'solution_0021.rs',
+  type: 'file',
+  content: solution21Rs,
+};
+
+export const files = [
+  {
+    fileName: 'data_structure',
+    type: 'directory',
+    children: [
+      { fileName: 'mod.rs', type: 'file', content: datastructureRs },
+      { fileName: 'linked_list.rs', type: 'file', content: linkedListRs },
+    ],
+  },
+  {
+    fileName: 'solutions',
+    type: 'directory',
+    expanded: true,
+    children: [
+      { fileName: 'mod.rs', type: 'file', content: solutionsRs },
+      init,
+    ],
+  },
+  { fileName: 'lib.rs', type: 'file', content: libRs },
+];
+
+<FileExplorer files={files} init={init} />
+
+## 总结
+
+本人目前对 Rust 的认识比较浅，可能有很多说错的地方，以后理解深刻之后再回来修改。
+
+这里用到的单向链表是简化之后的版本，实际生产环境中用到的 Rust 单向链表和双向链表实现要复杂的多，要用到大量的 unsafe 代码。
+水平有限，这里就不展开了，具体可以参考这个仓库的实现：[Amanieu/intrusive-rs](https://github.com/Amanieu/intrusive-rs)
+
