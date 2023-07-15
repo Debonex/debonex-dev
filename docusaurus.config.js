@@ -64,7 +64,7 @@ const config = {
           src: 'img/favicon.svg',
         },
         items: [
-          { to: '/blog', label: 'Blog', position: 'left' },
+          { to: '/posts', label: 'Posts', position: 'left' },
           {
             href: 'https://github.com/Debonex',
             position: 'right',
@@ -84,6 +84,17 @@ const config = {
         additionalLanguages: ['rust'],
       },
     }),
+
+  plugins: [
+    [
+      '@docusaurus/plugin-content-blog',
+      {
+        id: 'posts',
+        routeBasePath: 'posts',
+        path: './posts',
+      },
+    ],
+  ],
 };
 
 module.exports = config;
