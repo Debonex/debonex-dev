@@ -13,7 +13,7 @@ import linkedListRs from '!!raw-loader!@site/source/rust_lc/src/data_structure/l
 
 前段时间在尝试用 Rust 刷 Leetcode，一开始感觉没什么问题。直到遇到单向链表，我开始和编译器作斗争了。
 
-<!-- truncate -->
+{/* truncate */}
 
 一开始是根据编译器的提示稀里糊涂地解决的，加一个 `as_ref()`，加一个 `clone()` 什么的。
 问题虽然是解决了，但是代码非常不优雅，也有很多冗余，自己也糊里糊涂的。今天尝试一下把思路理清楚。
@@ -115,4 +115,3 @@ export const files = [
 
 这里用到的单向链表是简化之后的版本，实际生产环境中用到的 Rust 单向链表和双向链表实现要复杂的多，要用到大量的 unsafe 代码。
 水平有限，这里就不展开了，具体可以参考这个仓库的实现：[Amanieu/intrusive-rs](https://github.com/Amanieu/intrusive-rs)
-
