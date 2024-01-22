@@ -66,6 +66,7 @@ const config = {
         },
         items: [
           { to: '/posts', label: 'Posts', position: 'left' },
+          { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/Debonex',
             position: 'right',
