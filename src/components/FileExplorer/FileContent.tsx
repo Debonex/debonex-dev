@@ -1,6 +1,7 @@
 import CodeBlock from '@theme/CodeBlock';
-import React, { FC } from 'react';
-import { File } from '.';
+import clsx from 'clsx';
+import { FC, useContext } from 'react';
+import { File, FileExplorerContext } from '.';
 
 const mapLang = (extension: string) => {
   switch (extension) {
@@ -15,8 +16,14 @@ const FileContent: FC<{ file?: File }> = ({ file }) => {
   const extension = file.fileName.split('.').pop();
   const lang = mapLang(extension);
 
+  const { collapse } = useContext(FileExplorerContext);
+
   return (
-    <CodeBlock language={lang} showLineNumbers>
+    <CodeBlock
+      language={lang}
+      showLineNumbers
+      className={clsx({ 'md:col-span-2': collapse })}
+    >
       {file.content}
     </CodeBlock>
   );
