@@ -24,7 +24,7 @@ const FileItem: FC<{
           'border-primary-main bg-light-dim text-primary-main dark:!bg-[#39414a]':
             activeFile,
           'border-transparent': !activeFile,
-        }
+        },
       )}
     >
       {file.type === 'file' && (
@@ -34,7 +34,7 @@ const FileItem: FC<{
         <ChevronSvg
           className={clsx(
             'inline h-3.5 w-3.5 fill-current align-middle transition-transform',
-            { 'rotate-90': !active, 'rotate-180': active }
+            { 'rotate-90': !active, 'rotate-180': active },
           )}
         />
       )}

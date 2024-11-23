@@ -13,7 +13,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "fmt": "prettier -w src/**/*.{md,mdx,tsx,css} blog/**/*.{md,mdx,tsx,css,yml} posts/**/*.{md,mdx,tsx,css,yml}"
+    "fmt": "prettier -w src/**/*.{tsx,css} posts/**/*.mdx"
   },
   "dependencies": {
     "@docusaurus/core": "^3.6.2",
@@ -30,7 +30,8 @@
     "@types/react": "^18.2.29",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
-    "prettier": "^2.8.7",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "raw-loader": "^4.0.2",
     "tailwindcss": "^3.3.1",
     "typescript": "~5.2.2"
