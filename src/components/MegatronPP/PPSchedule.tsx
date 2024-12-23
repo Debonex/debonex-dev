@@ -4,7 +4,7 @@ export type Step = {};
 
 const Forward: FC<{ idx: number }> = ({ idx }) => {
   return (
-    <div className="flex h-5 w-5 items-center justify-center bg-blue-600 text-xs text-white">
+    <div className="flex h-5 w-5 items-center justify-center bg-blue-500 text-xs dark:bg-blue-600">
       {idx}
     </div>
   );
@@ -12,14 +12,14 @@ const Forward: FC<{ idx: number }> = ({ idx }) => {
 
 const Backward: FC<{ idx: number }> = ({ idx }) => {
   return (
-    <div className="flex h-5 w-[41px] items-center justify-center border bg-green-600 text-xs">
+    <div className="flex h-5 w-[41px] items-center justify-center border bg-green-500 text-xs dark:bg-green-600">
       {idx}
     </div>
   );
 };
 
 const Idle: FC = () => {
-  return <div className="h-5 w-5 bg-slate-500"></div>;
+  return <div className="h-5 w-5 bg-slate-400 dark:bg-slate-500"></div>;
 };
 
 const schedule_without_interleaved = (pp: number, microBatch: number) => {
@@ -43,11 +43,13 @@ const schedule_without_interleaved = (pp: number, microBatch: number) => {
     // judge action
     for (let pp_rank = 0; pp_rank < pp; pp_rank++) {
       const ppState = states[pp_rank];
+      if (ppState.backward % 1 != 0) {
+        action('backward_end', ppState.backward + 0.5);
+        continue;
+      }
       // first pp rank
       if (pp_rank == 0) {
-        if (ppState.backward % 1 != 0) {
-          action('backward_end', ppState.backward + 0.5);
-        } else if (ppState.backward == states[1].backward - 1) {
+        if (ppState.backward == states[1].backward - 1) {
           action('backward_start', ppState.backward + 1);
         } else if (ppState.forward < microBatch) {
           action('forward', ppState.forward + 1);
@@ -57,9 +59,7 @@ const schedule_without_interleaved = (pp: number, microBatch: number) => {
       }
       // middle pp rank
       else if (pp_rank < pp - 1) {
-        if (ppState.backward % 1 != 0) {
-          action('backward_end', ppState.backward + 0.5);
-        } else if (ppState.backward == states[pp_rank + 1].backward - 1) {
+        if (ppState.backward == states[pp_rank + 1].backward - 1) {
           action('backward_start', ppState.backward + 1);
         } else if (ppState.forward < states[pp_rank - 1].forward) {
           action('forward', ppState.forward + 1);
@@ -69,9 +69,7 @@ const schedule_without_interleaved = (pp: number, microBatch: number) => {
       }
       // last pp rank
       else {
-        if (ppState.backward % 1 != 0) {
-          action('backward_end', ppState.backward + 0.5);
-        } else if (ppState.backward == ppState.forward - 1) {
+        if (ppState.backward == ppState.forward - 1) {
           action('backward_start', ppState.backward + 1);
         } else if (ppState.forward < states[pp_rank - 1].forward) {
           action('forward', ppState.forward + 1);
@@ -114,14 +112,19 @@ const schedule_without_interleaved = (pp: number, microBatch: number) => {
   return schedules;
 };
 
-type PPScheduleProps = {
+export type PPScheduleProps = {
   mode: 'interleaved' | 'without_interleaved';
   pp: number;
   vpp?: number;
-  micro_batch: number;
+  microBatch: number;
 };
 
-const PPSchedule: FC<PPScheduleProps> = ({ mode, pp, vpp, micro_batch }) => {
+const PPSchedule: FC<PPScheduleProps> = ({
+  mode,
+  pp,
+  vpp,
+  microBatch: microBatch,
+}) => {
   // pp should be greater than 1 and should be integer
   if (pp < 2 || !Number.isInteger(pp)) {
     return <div>Invalid pp</div>;
@@ -129,7 +132,7 @@ const PPSchedule: FC<PPScheduleProps> = ({ mode, pp, vpp, micro_batch }) => {
 
   const schedules =
     mode === 'without_interleaved'
-      ? schedule_without_interleaved(pp, micro_batch)
+      ? schedule_without_interleaved(pp, microBatch)
       : [];
 
   return (
@@ -143,6 +146,10 @@ const PPSchedule: FC<PPScheduleProps> = ({ mode, pp, vpp, micro_batch }) => {
       </div>
     </div>
   );
+};
+
+const PPScheduleController = () => {
+  return <div></div>;
 };
 
 export default PPSchedule;

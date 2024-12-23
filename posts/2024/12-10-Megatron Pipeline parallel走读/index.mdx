@@ -4,7 +4,7 @@ title: Megatron Pipeline parallel走读
 tags: [NLP, Megatron, Pipeline parallel, PyTorch]
 ---
 
-import PPSchedule, { calc } from '@site/src/components/PPSchedule';
+import ScheduleController from '@site/src/components/MegatronPP/ScheduleController';
 
 最近在适配模型训练的工作中，需要修改 Megatron PP切分部分的代码，因此对 Megatron 这部分实现的代码进行了走读，做一下记录。
 
@@ -14,4 +14,4 @@ import PPSchedule, { calc } from '@site/src/components/PPSchedule';
 
 ## Bubble计算
 
-<PPSchedule mode="without_interleaved" pp={8} micro_batch={8} />
+<ScheduleController />
