@@ -1,5 +1,8 @@
 import { FC } from 'react';
-import { schedule_without_interleaved } from './schedule';
+import {
+  schedule_without_interleaving,
+  schedule_with_interleaving,
+} from './schedule';
 
 export type PPScheduleProps = {
   mode: 'interleaved' | 'without_interleaved';
@@ -19,10 +22,16 @@ const PPSchedule: FC<PPScheduleProps> = ({
     return <div>Invalid pp</div>;
   }
 
-  const schedules =
-    mode === 'without_interleaved'
-      ? schedule_without_interleaved(pp, microBatch)
-      : [];
+  let schedules = [];
+  try {
+    if (mode == 'interleaved') {
+      schedules = schedule_with_interleaving(pp, vpp, microBatch);
+    } else if (mode == 'without_interleaved') {
+      schedules = schedule_without_interleaving(pp, microBatch);
+    }
+  } catch (error) {
+    return <div>{error.message}</div>;
+  }
 
   return (
     <div className="w-full overflow-auto">

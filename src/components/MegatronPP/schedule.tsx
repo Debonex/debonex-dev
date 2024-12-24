@@ -1,6 +1,57 @@
 import { Forward, Backward, Idle } from './bubbleItems';
 
-const schedule_without_interleaved = (pp: number, microBatch: number) => {
+const schedule_with_interleaving = (
+  pp: number,
+  vpp: number,
+  microBatch: number,
+) => {
+  if (microBatch % pp != 0) {
+    throw new Error('使用VPP时，microBatch应该是pp的整数倍');
+  }
+
+  const schedules = Array.from({ length: pp }, (_) => []);
+  let tick = 0;
+  let all_done = false;
+  const totalMicroBatch = microBatch * vpp;
+  const states = Array.from({ length: pp }, () => {
+    return Array.from({ length: vpp }, () => {
+      return { forward: 0, backward: 0 };
+    });
+  });
+  const warmupBatches = Array.from({ length: pp }, (_, pp_rank) => {
+    if (microBatch == pp) {
+      return microBatch * vpp;
+    } else {
+      let warmupBatch = (pp - pp_rank - 1) * 2;
+      warmupBatch += (vpp - 1) * pp;
+      warmupBatch = Math.min(warmupBatch, totalMicroBatch);
+      return warmupBatch;
+    }
+  });
+
+  while (!all_done) {
+    let actions = [];
+    const action = (
+      type: 'backward_start' | 'backward_end' | 'forward' | 'idle',
+      idx?: number,
+    ) => {
+      actions.push({ type, idx });
+    };
+
+    if (states[0][0].backward == microBatch) {
+      all_done = true;
+    }
+    // prevent unknown infinite loop
+    if (tick > 100) {
+      all_done = true;
+    }
+    tick++;
+  }
+
+  return schedules;
+};
+
+const schedule_without_interleaving = (pp: number, microBatch: number) => {
   const schedules = Array.from({ length: pp }, (_) => []);
   let tick = 0;
   let all_done = false;
@@ -90,4 +141,4 @@ const schedule_without_interleaved = (pp: number, microBatch: number) => {
   return schedules;
 };
 
-export { schedule_without_interleaved };
+export { schedule_without_interleaving, schedule_with_interleaving };
