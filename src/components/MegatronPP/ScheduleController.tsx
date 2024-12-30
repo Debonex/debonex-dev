@@ -19,16 +19,17 @@ const ScheduleController: FC = () => {
   const onModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setMode(e.target.value as PPScheduleProps['mode']);
   };
-  const modeOptions = [
+  const modeOptions: { value: PPScheduleProps['mode']; label: string }[] = [
     { value: 'without_interleaved', label: 'Without Interleaved(PP)' },
-    { value: 'with_interleaved', label: 'With Interleaved(VPP)' },
+    { value: 'interleaved', label: 'With Interleaved(VPP)' },
+    { value: 'gpipe', label: 'GPipe' },
   ];
   const [overlapP2PComm, setOverlapP2PComm] = useState(false);
 
   const bubbleRatio = (pp - 1) / microBatch;
 
   return (
-    <div>
+    <>
       <div className="mb-4 flex gap-4">
         <Select
           label="mode"
@@ -43,11 +44,13 @@ const ScheduleController: FC = () => {
           value={microBatch}
           onChange={onMicroBatchChange}
         />
-        <CheckBox
-          enabled={overlapP2PComm}
-          setEnabled={setOverlapP2PComm}
-          label="p2p_overlap_comm"
-        />
+        {mode === 'interleaved' && (
+          <CheckBox
+            enabled={overlapP2PComm}
+            setEnabled={setOverlapP2PComm}
+            label="p2p_overlap_comm"
+          />
+        )}
       </div>
       <PPSchedule
         mode={mode}
@@ -59,7 +62,7 @@ const ScheduleController: FC = () => {
       <div className="mt-2">
         Bubble比例: <span className="text-sm">{bubbleRatio}</span>
       </div>
-    </div>
+    </>
   );
 };
 

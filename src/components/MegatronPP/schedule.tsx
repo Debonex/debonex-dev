@@ -4,6 +4,7 @@ const schedule_with_interleaving = (
   pp: number,
   vpp: number,
   microBatch: number,
+  overlapP2PComm: boolean,
 ) => {
   if (microBatch % pp != 0) {
     throw new Error('使用VPP时，microBatch应该是pp的整数倍');
@@ -51,11 +52,7 @@ const schedule_with_interleaving = (
   return schedules;
 };
 
-const schedule_without_interleaving = (
-  pp: number,
-  microBatch: number,
-  overlapP2PComm: boolean,
-) => {
+const schedule_without_interleaving = (pp: number, microBatch: number) => {
   const schedules = Array.from({ length: pp }, (_) => []);
   let tick = 0;
   let all_done = false;
@@ -145,4 +142,44 @@ const schedule_without_interleaving = (
   return schedules;
 };
 
-export { schedule_without_interleaving, schedule_with_interleaving };
+const schedule_gpipe = (pp: number, microBatch: number) => {
+  const schedules = Array.from({ length: pp }, (_) => []);
+
+  for (let pp_rank = 0; pp_rank < pp; pp_rank++) {
+    let n = 0;
+    const append = (type: 'backward' | 'forward' | 'idle', idx?: number) => {
+      const key = `${pp_rank}-${n}`;
+      if (type == 'idle') {
+        schedules[pp_rank].push(<Idle key={key} />);
+      } else if (type == 'backward') {
+        schedules[pp_rank].push(<Backward key={key} idx={idx} />);
+      } else {
+        schedules[pp_rank].push(<Forward key={key} idx={idx} />);
+      }
+      n += 1;
+    };
+    for (let i = 0; i < pp_rank; i++) {
+      append('idle');
+    }
+    for (let i = 0; i < microBatch; i++) {
+      append('forward', i);
+    }
+    for (let i = 0; i < 3 * (pp - pp_rank - 1); i++) {
+      append('idle');
+    }
+    for (let i = 0; i < microBatch; i++) {
+      append('backward', i);
+    }
+    for (let i = 0; i < 2 * pp_rank; i++) {
+      append('idle');
+    }
+  }
+
+  return schedules;
+};
+
+export {
+  schedule_without_interleaving,
+  schedule_with_interleaving,
+  schedule_gpipe,
+};

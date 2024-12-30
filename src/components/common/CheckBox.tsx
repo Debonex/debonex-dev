@@ -18,11 +18,11 @@ const CheckBox: FC<CheckBoxProps> = ({ enabled, setEnabled, label }) => {
         onChange={setEnabled}
         className={clsx(
           'group size-6 cursor-pointer rounded-md p-1 ring-1 ring-inset',
-          'bg-black/10 ring-black/15 data-[checked]:bg-black/50 dark:bg-white/10 dark:ring-white/15 dark:data-[checked]:bg-white',
-          label && 'block mt-1.5',
+          'bg-black/10 ring-black/15 data-[checked]:bg-primary-main dark:bg-white/10 dark:ring-white/15 dark:data-[checked]:bg-primary-main',
+          label && 'mt-1.5 block',
         )}
       >
-        <CheckIcon className="hidden size-4 fill-white group-data-[checked]:block dark:fill-black" />
+        <CheckIcon className="hidden size-4 fill-white group-data-[checked]:block" />
       </Checkbox>
     </Field>
   );

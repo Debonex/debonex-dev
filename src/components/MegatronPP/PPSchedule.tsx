@@ -2,10 +2,11 @@ import { FC } from 'react';
 import {
   schedule_without_interleaving,
   schedule_with_interleaving,
+  schedule_gpipe,
 } from './schedule';
 
 export type PPScheduleProps = {
-  mode: 'interleaved' | 'without_interleaved';
+  mode: 'interleaved' | 'without_interleaved' | 'gpipe';
   pp: number;
   vpp?: number;
   microBatch: number;
@@ -27,9 +28,16 @@ const PPSchedule: FC<PPScheduleProps> = ({
   let schedules = [];
   try {
     if (mode == 'interleaved') {
-      schedules = schedule_with_interleaving(pp, vpp, microBatch);
+      schedules = schedule_with_interleaving(
+        pp,
+        vpp,
+        microBatch,
+        overlapP2PComm,
+      );
     } else if (mode == 'without_interleaved') {
-      schedules = schedule_without_interleaving(pp, microBatch, overlapP2PComm);
+      schedules = schedule_without_interleaving(pp, microBatch);
+    } else if (mode == 'gpipe') {
+      schedules = schedule_gpipe(pp, microBatch);
     }
   } catch (error) {
     return <div>{error.message}</div>;
