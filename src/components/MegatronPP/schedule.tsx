@@ -51,7 +51,11 @@ const schedule_with_interleaving = (
   return schedules;
 };
 
-const schedule_without_interleaving = (pp: number, microBatch: number) => {
+const schedule_without_interleaving = (
+  pp: number,
+  microBatch: number,
+  overlapP2PComm: boolean,
+) => {
   const schedules = Array.from({ length: pp }, (_) => []);
   let tick = 0;
   let all_done = false;

@@ -9,13 +9,15 @@ export type PPScheduleProps = {
   pp: number;
   vpp?: number;
   microBatch: number;
+  overlapP2PComm: boolean;
 };
 
 const PPSchedule: FC<PPScheduleProps> = ({
   mode,
   pp,
   vpp,
-  microBatch: microBatch,
+  microBatch,
+  overlapP2PComm,
 }) => {
   // pp should be greater than 1 and should be integer
   if (pp < 2 || !Number.isInteger(pp)) {
@@ -27,7 +29,7 @@ const PPSchedule: FC<PPScheduleProps> = ({
     if (mode == 'interleaved') {
       schedules = schedule_with_interleaving(pp, vpp, microBatch);
     } else if (mode == 'without_interleaved') {
-      schedules = schedule_without_interleaving(pp, microBatch);
+      schedules = schedule_without_interleaving(pp, microBatch, overlapP2PComm);
     }
   } catch (error) {
     return <div>{error.message}</div>;

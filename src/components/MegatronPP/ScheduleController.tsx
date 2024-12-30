@@ -2,6 +2,7 @@ import Input from '@site/src/components/common/Input';
 import Select from '@site/src/components/common/Select';
 import { FC, useState } from 'react';
 import PPSchedule, { PPScheduleProps } from './PPSchedule';
+import CheckBox from '../common/CheckBox';
 
 const ScheduleController: FC = () => {
   const [pp, setPP] = useState(4);
@@ -22,6 +23,8 @@ const ScheduleController: FC = () => {
     { value: 'without_interleaved', label: 'Without Interleaved(PP)' },
     { value: 'with_interleaved', label: 'With Interleaved(VPP)' },
   ];
+  const [overlapP2PComm, setOverlapP2PComm] = useState(false);
+
   const bubbleRatio = (pp - 1) / microBatch;
 
   return (
@@ -40,8 +43,18 @@ const ScheduleController: FC = () => {
           value={microBatch}
           onChange={onMicroBatchChange}
         />
+        <CheckBox
+          enabled={overlapP2PComm}
+          setEnabled={setOverlapP2PComm}
+          label="p2p_overlap_comm"
+        />
       </div>
-      <PPSchedule mode={mode} pp={pp} microBatch={microBatch} />
+      <PPSchedule
+        mode={mode}
+        pp={pp}
+        microBatch={microBatch}
+        overlapP2PComm={overlapP2PComm}
+      />
 
       <div className="mt-2">
         Bubble比例: <span className="text-sm">{bubbleRatio}</span>
