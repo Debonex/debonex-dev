@@ -1,8 +1,9 @@
+import clsx from 'clsx';
 import { FC } from 'react';
 import {
-  schedule_without_interleaving,
-  schedule_with_interleaving,
   schedule_gpipe,
+  schedule_with_interleaving,
+  schedule_without_interleaving,
 } from './schedule';
 
 export type PPScheduleProps = {
@@ -11,6 +12,8 @@ export type PPScheduleProps = {
   vpp?: number;
   microBatch: number;
   overlapP2PComm: boolean;
+  highlight?: boolean | ((key: string) => boolean);
+  className?: string;
 };
 
 const PPSchedule: FC<PPScheduleProps> = ({
@@ -19,6 +22,8 @@ const PPSchedule: FC<PPScheduleProps> = ({
   vpp,
   microBatch,
   overlapP2PComm,
+  highlight,
+  className,
 }) => {
   // pp should be greater than 1 and should be integer
   if (pp < 2 || !Number.isInteger(pp)) {
@@ -35,7 +40,7 @@ const PPSchedule: FC<PPScheduleProps> = ({
         overlapP2PComm,
       );
     } else if (mode == 'without_interleaved') {
-      schedules = schedule_without_interleaving(pp, microBatch);
+      schedules = schedule_without_interleaving(pp, microBatch, highlight);
     } else if (mode == 'gpipe') {
       schedules = schedule_gpipe(pp, microBatch);
     }
@@ -44,7 +49,7 @@ const PPSchedule: FC<PPScheduleProps> = ({
   }
 
   return (
-    <div className="w-full overflow-auto">
+    <div className={clsx('w-full overflow-auto', className)}>
       <div className="flex w-fit flex-col gap-px bg-black p-px">
         {schedules.map((schedule, idx) => (
           <div key={idx} className="flex gap-px">

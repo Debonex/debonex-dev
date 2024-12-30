@@ -52,7 +52,11 @@ const schedule_with_interleaving = (
   return schedules;
 };
 
-const schedule_without_interleaving = (pp: number, microBatch: number) => {
+const schedule_without_interleaving = (
+  pp: number,
+  microBatch: number,
+  highlight?: boolean | ((key: string) => boolean),
+) => {
   const schedules = Array.from({ length: pp }, (_) => []);
   let tick = 0;
   let all_done = false;
@@ -116,13 +120,19 @@ const schedule_without_interleaving = (pp: number, microBatch: number) => {
       const schedule = schedules[pp_rank];
       const key = `${tick}-${pp_rank}`;
       const state = states[pp_rank];
+      let hl: boolean;
+      if (typeof highlight === 'function') {
+        hl = highlight(key);
+      } else {
+        hl = highlight;
+      }
       if (action.type == 'forward') {
-        schedule.push(<Forward idx={action.idx} key={key} />);
+        schedule.push(<Forward idx={action.idx} key={key} highlight={hl} />);
         state.forward = action.idx;
       } else if (action.type == 'backward_start') {
         state.backward = action.idx - 0.5;
       } else if (action.type == 'backward_end') {
-        schedule.push(<Backward idx={action.idx} key={key} />);
+        schedule.push(<Backward idx={action.idx} key={key} highlight={hl} />);
         state.backward = action.idx;
       } else {
         schedule.push(<Idle key={key} />);
