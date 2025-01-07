@@ -1,14 +1,12 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
-
+import type * as Preset from '@docusaurus/preset-classic';
+import type { Config } from '@docusaurus/types';
 const { themes } = require('prism-react-renderer');
 const lightTheme = themes.github;
 const darkTheme = themes.dracula;
 
-/** @type {import('@docusaurus/types').Config} */
-const config = {
+const config: Config = {
   title: 'Debonex site',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'Debonex site',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -39,8 +37,7 @@ const config = {
   presets: [
     [
       'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: false,
         blog: {
           // showReadingTime: true,
@@ -52,42 +49,40 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      }),
+      } satisfies Preset.Options,
     ],
   ],
 
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
-      navbar: {
-        title: 'Debonex',
-        logo: {
-          alt: 'Debonex',
-          src: 'img/favicon.svg',
+  themeConfig: {
+    // Replace with your project's social card
+    image: 'img/docusaurus-social-card.jpg',
+    navbar: {
+      title: 'Debonex',
+      logo: {
+        alt: 'Debonex',
+        src: 'img/favicon.svg',
+      },
+      items: [
+        { to: '/posts', label: 'Posts', position: 'left' },
+        {
+          href: 'https://github.com/Debonex',
+          position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
-        items: [
-          { to: '/posts', label: 'Posts', position: 'left' },
-          {
-            href: 'https://github.com/Debonex',
-            position: 'right',
-            className: 'header-github-link',
-            'aria-label': 'GitHub repository',
-          },
-        ],
-      },
-      footer: {
-        style: 'dark',
-        links: [],
-        copyright: `Copyright © ${new Date().getFullYear()} Debonex. Powered by Docusaurus.`,
-      },
-      prism: {
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        additionalLanguages: ['rust'],
-      },
-    }),
+      ],
+    },
+    footer: {
+      style: 'dark',
+      links: [],
+      copyright: `Copyright © ${new Date().getFullYear()} Debonex. Powered by Docusaurus.`,
+    },
+    prism: {
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      additionalLanguages: ['rust'],
+    },
+  } satisfies Preset.ThemeConfig,
 
   plugins: [
     [
@@ -101,4 +96,4 @@ const config = {
   ],
 };
 
-module.exports = config;
+export default config;
