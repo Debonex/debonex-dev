@@ -53,6 +53,8 @@ def forward_backward_pipelining_with_interleaving(
 正式进入到函数的逻辑，跳过一些函数的断言和参数检查。首先看到的是关于`num_warmup_microbatches`的计算，
 `num_warmup_microbatches` 指的是在warmup阶段，每个进程需要计算的batch数，越靠前的PP stage，warmup阶段的batch数越多。
 
+其中，`num_microbatches` = `global_batch_size / micro_batch_size / data_parallel_size`
+
 export const warmupHighlights = ['0-0', '1-0', '1-1', '2-0', '2-1', '2-2'];
 export const warmupHighlight = (key) => warmupHighlights.includes(key);
 
@@ -271,7 +273,7 @@ export const coolDownHighlight = (key) => coolDownHighlights.includes(key);
 
 待补充
 
-{/* {/_ 1. microbatch 计算 2. 什么是梯度同步 */}
+{/* {/_ 1. 什么是梯度同步 2. nano pipe */}
 
 ## Bubble计算
 
