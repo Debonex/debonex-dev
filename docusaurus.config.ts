@@ -64,6 +64,7 @@ const config: Config = {
       },
       items: [
         { to: '/posts', label: 'Posts', position: 'left' },
+        { to: '/minesweeper', label: 'Minesweeper', position: 'left' },
         {
           href: 'https://github.com/Debonex',
           position: 'right',
