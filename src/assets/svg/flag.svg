@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: CorelDRAW -->
+
+<svg
+   xml:space="preserve"
+   width="25mm"
+   height="25mm"
+   style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+   viewBox="0 0 1.11733 1.11733"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="flag.svg"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview5"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:document-units="mm"
+   inkscape:zoom="2.8427686"
+   inkscape:cx="56.459044"
+   inkscape:cy="81.610581"
+   inkscape:window-width="1416"
+   inkscape:window-height="857"
+   inkscape:window-x="0"
+   inkscape:window-y="38"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="Layer_x0020_1" />
+ <defs
+   id="defs2">
+  <style
+   type="text/css"
+   id="style1">
+   <![CDATA[
+    .fil4 {fill:#d8e0e8}
+    .fil1 {fill:#707880}
+    .fil2 {fill:#222a32}
+    .fil3 {fill:#485058}
+    .fil5 {fill:url(#id0)}
+   ]]>
+  </style>
+  <linearGradient
+   id="id0"
+   gradientUnits="userSpaceOnUse"
+   x1="0.313675"
+   y1="0.366663"
+   x2="0.593919"
+   y2="0.41671"
+   gradientTransform="matrix(1.3597409,0,0,1.3124599,-0.19966965,-0.18385018)">
+   <stop
+   offset="0"
+   style="stop-color:#f77070"
+   id="stop1" />
+   <stop
+   offset="1"
+   style="stop-color:#f75050"
+   id="stop2" />
+  </linearGradient>
+ </defs>
+ <g
+   id="Layer_x0020_1"
+   inkscape:label="Layer 1">
+  <metadata
+   id="CorelCorpID_0Corel-Layer" />
+  
+  
+  
+  <rect
+   class="fil4"
+   x="0.55226701"
+   y="0.47237977"
+   width="0.13597409"
+   height="0.39373797"
+   id="rect4"
+   style="stroke-width:1.3359" />
+  <rect
+   class="fil4"
+   x="0.21026772"
+   y="0.83811253"
+   width="0.75356156"
+   height="0.18709511"
+   rx="0.053989053"
+   ry="0.052111745"
+   id="rect5"
+   style="stroke-width:1.3359" />
+  <path
+   class="fil5"
+   d="M 0.68850627,0.08169459 V 0.57875072 C 0.60102625,0.38251565 0.24675502,0.56676103 0.1462457,0.18617558 c 0,0 0.11531935,0.032872 0.24496819,-0.0269651 C 0.520863,0.09937351 0.61680849,0.11634323 0.68850627,0.08169459 Z"
+   id="path5"
+   style="fill:url(#id0);stroke-width:1.3359" />
+ </g>
+</svg>
