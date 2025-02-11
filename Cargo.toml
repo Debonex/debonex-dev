@@ -1,2 +1,2 @@
 [workspace]
-members = ["source/rust_lc"]
+members = ["leetcode/rust"]
