@@ -25,3 +25,4 @@ jobs:
             docker stop site
             docker pull ghcr.io/debonex/debonex-dev:latest
             docker run -d --rm --name site -p 3000:3000 ghcr.io/debonex/debonex-dev:latest
+            docker rmi $(docker images | grep ' none ' | awk '{print $3}')   
