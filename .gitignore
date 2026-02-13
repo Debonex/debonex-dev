@@ -23,3 +23,9 @@ yarn-error.log*
 # Rust
 **/target
 **/.cargo
+
+## Python
+__pycache__
+
+# leetcode
+.lcpr_data/
